@@ -48,50 +48,56 @@ int main(){
     return 0;
 }
 
+//Imprime el menu principal
 void PrintMenu(){
     int opt2;
     bool OUT = true;
-do{
+    do{
 
-    cout<<"1.  Agregar orden a domicilio                           "<<endl;  
-    cout<<"2.  Agregar orden en restaurante                        "<<endl;  
-    cout<<"3.  Ver ordenes a domicilio                             "<<endl;  
-    cout<<"4.  Ver ordenes en restaurante                          "<<endl;  
-    cout<<"5.  Despachar ordenes a domicilio                       "<<endl;  
-    cout<<"6.  Despachar ordenes a restaurante                     "<<endl; 
-    cout<<"7.  Ver tiempo promedio de espera domicilio             "<<endl;  
-    cout<<"8.  Ver tiempo promedio de espera restaurante           "<<endl;     
-    cout<<"9.  Cancelar orden (domicilio o restaurante, solo admin)"<<endl; 
-    cout<<"10. Calcular total de ventas                            "<<endl;  
-    cout<<"11. Cambiar de usuario                                  "<<endl;  
-    cout<<"12. Salir                                               "<<endl; 
-    cin>>opt2;
+        cout<<"1.  Agregar orden a domicilio                           "<<endl;  
+        cout<<"2.  Agregar orden en restaurante                        "<<endl;  
+        cout<<"3.  Ver ordenes a domicilio                             "<<endl;  
+        cout<<"4.  Ver ordenes en restaurante                          "<<endl;  
+        cout<<"5.  Despachar ordenes a domicilio                       "<<endl;  
+        cout<<"6.  Despachar ordenes a restaurante                     "<<endl; 
+        cout<<"7.  Ver tiempo promedio de espera domicilio             "<<endl;  
+        cout<<"8.  Ver tiempo promedio de espera restaurante           "<<endl;     
+        cout<<"9.  Cancelar orden (domicilio o restaurante, solo admin)"<<endl; 
+        cout<<"10. Calcular total de ventas                            "<<endl;  
+        cout<<"11. Cambiar de usuario                                  "<<endl;  
+        cout<<"12. Salir                                               "<<endl; 
+        cin>>opt2;
 
-switch (opt2){
-    case 1: HomeDelivery();break;
-    case 2: RestaurantDelivery();break;
-    case 3: HomeOrders();break;
-    case 4: RestaurantOrders();break;
-    case 5: //Sales();break;
-    case 6: //AdminMenu(); break;
-    case 7: //AdminMenu(); break;
-    case 8: //AdminMenu(); break;
-    case 9: //AdminMenu(); break;
-    case 10: CancelOrder(); break;
-    case 11: //AdminMenu(); break;
-    case 12: OUT=false;break;
-    default:cout<<"Seleccion una  Opcion Valida" <<endl;break;
+    switch (opt2){
+        case 1: HomeDelivery();break;
+        case 2: RestaurantDelivery();break;
+        case 3: HomeOrders();break;
+        case 4: //RestaurantOrders();break;
+        case 5: //Sales();break;
+        case 6: //AdminMenu(); break;
+        case 7: //AdminMenu(); break;
+        case 8: //AdminMenu(); break;
+        case 9: //AdminMenu(); break;
+        case 10: CancelOrder(); break;
+        case 11: //AdminMenu(); break;
+        case 12: OUT=false;break;
+        default:cout<<"Seleccion una  Opcion Valida" <<endl;break;
+    }
+    }while(OUT);
 }
-}while(OUT);
-}
 
+//esta funcion pide los datos para una Orden  a Domicilio.
 void HomeDelivery(){
     homedeliv HomeDeliv;
     bool keep = true;
+    bool continuar=true;
     int opt=0,opt1,opt2=0,opt3=0;
+
     cin.ignore();
     srand(time(0));
     HomeDeliv.Var1 = 1 + rand() % (50000 - 1000);  
+    
+    
     cout<<"Porfavor Ingrese el nombre del cliente: ";                getline(cin,HomeDeliv.CustomeName);    
 //    cout<<"Porfavor Ingrese la direccion del cliente"<<endl;  
 //    cout<<"Numero de casa "<<endl;                                   cin>>(cin,HomeDeliv.HomeAdd.HouseNumber);
@@ -111,39 +117,75 @@ void HomeDelivery(){
     cout<<"4)Regresar Menu Principal......."<<endl;
     cin>>opt;
     switch (opt){
-    case 1: cout<<"Entradas:                       "<<endl;
-            cout<<"Nombre                          Precio"<<endl;
-            cout<<"Orden de pan con ajo............$3.99 "<<endl;
-            cout<<"Orden de pizza rolls............$4.99 "<<endl;
-            cout<<"Orden de palitos de queso.......$3.75 "<<endl;
-            cin>>opt1;
-            switch (opt1){
-            case 0: HomeDeliv.entry = BreadGarlic;  break;
-            case 1: HomeDeliv.entry = Pizzarolls;   break;
-            case 2: HomeDeliv.entry = Cheesesticks; break;
-            }break;
-    case 2: cout<<"Nombre               Precio"<<endl;
-            cout<<"Pizza................$13.99 "<<endl;
-            cout<<"Pasta................$5.55  "<<endl;
-            cout<<"Lasgna...............$6.25  "<<endl;
-            cout<<"Porfavor Ingrese La seleccion del plato del cliente"<<endl;
-    case 3: cout<<"porfavor escoja una bebida"<<endl;  
-            cout<<"Nombre               Precio"<<endl;
-            cout<<"Cerveza..............$1.99  "<<endl;
-            cout<<"Soda.................$0.95  "<<endl;
-            cout<<"Té helado............$1.15  "<<endl;
-            cout<<"Porfavor Ingrese La seleccion de bebida del cliente"<<endl;break;
-    case 4: keep=false; break;
-    }  
-    }while(keep);
-            cout<<"No. de orden:  "            <<endl;                        cout<<HomeDeliv.Var1<<endl;       
-            cout<<"su total a pagar es "       <<endl;
-            Home.insert(Home.end(), HomeDeliv);
-            cout <<"Pedido ingresado exitosamente!\n";
-            cin.ignore();
+
+        case 1: do{
+                cout<<"Entradas:                       "<<endl;
+                cout<<"Nombre                          Precio"<<endl;
+                cout<<"0)Orden de pan con ajo............$3.99 "<<endl;
+                cout<<"1)Orden de pizza rolls............$4.99 "<<endl;
+                cout<<"2)Orden de palitos de queso.......$3.75 "<<endl;
+                cin>>opt1;
+
+                switch (opt1){
+                case 0: cout<<"Breadgarlic $3.50"<<endl;
+                        HomeDeliv.entry = BreadGarlic;  
+                        break;
+                case 1: cout<<"Pizzarrols $3.50"<<endl;
+                        HomeDeliv.entry = Pizzarolls;  break;    
+                case 2: cout<<"Cheesesticks $3.50"<<endl;                
+                        HomeDeliv.entry = Cheesesticks;  
+                        break;       
+                }  
+
+        case 2: cout<<"Nombre               Precio"<<endl;
+                cout<<"0)Pizza................$13.99 "<<endl;
+                cout<<"1)Pasta................$5.55  "<<endl;
+                cout<<"2)Lasgna...............$6.25  "<<endl;   
+                cout<<"3)Porfavor Ingrese La seleccion del plato del cliente"<<endl;
+                cin>>opt2;
+                switch (opt2){
+
+                case 0: cout<<"pizza           "<<endl;
+                        HomeDeliv.food = Pizza;  
+                        break;
+                case 1: cout<<"Pasta           "<<endl;
+                        HomeDeliv.food = Paste;  break;    
+                case 2: cout<<"Lasgna          "<<endl;                
+                        HomeDeliv.food = Lasagna;  
+                        break;       
+                }     
+
+        case 3: cout<<"porfavor escoja una bebida"<<endl;  
+                cout<<"Nombre               Precio"<<endl;
+                cout<<"0)Cerveza..............$1.99  "<<endl;
+                cout<<"1)Soda.................$0.95  "<<endl;
+                cout<<"2)Té helado............$1.15  "<<endl;
+                cout<<"Porfavor Ingrese La seleccion de bebida del cliente"<<endl;break;
+                cin>>opt3;
+                switch (opt3){
+
+                case 0: cout<<"Cerveza         "<<endl;
+                        HomeDeliv.drinkin = Beer;  
+                        break;
+                case 1: cout<<"Soda            "<<endl;
+                        HomeDeliv.drinkin = Soda;  break;    
+                case 2: cout<<"Te helado       "<<endl;                
+                        HomeDeliv.drinkin = Icetea;  
+                        break;       
+                }     
+
+        case 4: keep=false; break;
+        }  
+        }while(keep);
+                cout<<"No. de orden:  "            <<endl;                        cout<<HomeDeliv.Var1<<endl;       
+                cout<<"su total a pagar es "       <<endl;
+                Home.insert(Home.end(), HomeDeliv);
+                cout <<"Pedido ingresado exitosamente!\n";
+                cin.ignore();
 
 }
 
+//Esta funcion pide los datos para una orden de restaurante
 void RestaurantDelivery(){
     
     restaurantdeliv RESTAURANT;
@@ -178,20 +220,20 @@ void RestaurantDelivery(){
     cin.ignore();
 }
 
-
+//Recorre y Muestra todos los pedidos a Domicilio
 void HomeOrders(){
 
     cout << "\nPedidos a domicilio: ";    
     for (int i = 0; i < Home.size(); i++){
-        cout <<"Nombre del cliente : "<<Home[i].CustomeName              << "  "<<endl;
-  //      cout <<"Numero de casa :     "<<Home[i].HomeAdd.HouseNumber      << "  "<<endl;
-    //    cout <<"Colonia        :     "<<Home[i].HomeAdd.Suburb           << "  "<<endl;
-    //    cout <<"Municipios     :     "<<Home[i].HomeAdd.Municipality     << "  "<<endl;
-   //     cout <<"Departamento   :     "<<Home[i].HomeAdd.StateDepartament << "  "<<endl;
+        cout <<"Nombre del cliente : "<<Home[i].CustomeName             << "  "<<endl;
+    //  cout <<"Numero de casa :     "<<Home[i].HomeAdd.HouseNumber     << "  "<<endl;
+    //  cout <<"Colonia        :     "<<Home[i].HomeAdd.Suburb          << "  "<<endl;
+    //  cout <<"Municipios     :     "<<Home[i].HomeAdd.Municipality    << "  "<<endl;
+    //  cout <<"Departamento   :     "<<Home[i].HomeAdd.StateDepartament<< "  "<<endl;
         cout <<"Entradas Ordenadas:  "<<Home[i].entry                   << "  "<<endl;
-        //cout <<"Pizzas Ordenadas:    "<<Home[i].LunchPlate               << "  "<<endl;
-        //cout <<"Bebidas Ordenads:    "<<Home[i].Drinks                   << "  "<<endl;
-        cout <<"No. de Orden    :    "<<Home[i].Var1                     << "  \n"<<endl;
+    //cout <<"Pizzas Ordenadas:    "<<Home[i].LunchPlate               << "  "<<endl;
+    //cout <<"Bebidas Ordenads:    "<<Home[i].Drinks                   << "  "<<endl;
+        cout <<"No. de Orden    :    "<<Home[i].Var1                    << "  \n"<<endl;
     }   
 }
 
