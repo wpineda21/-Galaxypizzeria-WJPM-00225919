@@ -1,5 +1,0 @@
-
-    mainInfo houseInfo;
-};
-
-// Variables globales
