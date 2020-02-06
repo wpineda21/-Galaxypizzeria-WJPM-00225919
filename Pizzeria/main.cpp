@@ -86,6 +86,7 @@ void PrintMenu(){
     }while(OUT);
 }
 
+
 //esta funcion pide los datos para una Orden  a Domicilio.
 void HomeDelivery(){
     homedeliv HomeDeliv;
@@ -97,7 +98,7 @@ void HomeDelivery(){
     srand(time(0));
     HomeDeliv.Var1 = 1 + rand() % (50000 - 1000);  
     
-    
+
     cout<<"Porfavor Ingrese el nombre del cliente: ";                getline(cin,HomeDeliv.CustomeName);    
 //    cout<<"Porfavor Ingrese la direccion del cliente"<<endl;  
 //    cout<<"Numero de casa "<<endl;                                   cin>>(cin,HomeDeliv.HomeAdd.HouseNumber);
@@ -118,7 +119,7 @@ void HomeDelivery(){
     cin>>opt;
     switch (opt){
 
-        case 1: do{
+        case 1: 
                 cout<<"Entradas:                       "<<endl;
                 cout<<"Nombre                          Precio"<<endl;
                 cout<<"0)Orden de pan con ajo............$3.99 "<<endl;
@@ -175,7 +176,7 @@ void HomeDelivery(){
                 }     
 
         case 4: keep=false; break;
-        }  
+    }
         }while(keep);
                 cout<<"No. de orden:  "            <<endl;                        cout<<HomeDeliv.Var1<<endl;       
                 cout<<"su total a pagar es "       <<endl;
@@ -184,6 +185,7 @@ void HomeDelivery(){
                 cin.ignore();
 
 }
+
 
 //Esta funcion pide los datos para una orden de restaurante
 void RestaurantDelivery(){
