@@ -3,13 +3,14 @@
 #include <time.h>    // libreria para el uso de numeros aleatorios
 #include <vector>    // Incluyendo Libreria para manejo de listas;  
 #include <algorithm> // Libreria de Manejo de listas   
+#include <math.h>    // libreria que permite el uso de ceiling
 using namespace std;
 
 
 //Declaracion de Enums
- enum Entry  {BreadGarlic,Pizzarolls,Cheesesticks};
- enum Food   {Pizza,Paste,Lasagna};
- enum drinks {Beer,Soda,Icetea};
+ enum Entry  {trash,BreadGarlic,Pizzarolls,Cheesesticks};
+ enum Food   {trash,Pizza,Paste,Lasagna};
+ enum drinks {trash,Beer,Soda,Icetea};
 
 //declaracion de Estructuras de Registros
 struct  SpecificationAddres {
@@ -23,10 +24,11 @@ struct homedeliv{
         drinks drinkin;
         Addres HomeAdd;               
         string CustomeName;
-        int Var1;
+        int Var1=0;
         long int Homephone;
-        //float Amount,PaymentType;  
-    }; vector <homedeliv> Home;
+        //float Amount,PaymentType;
+        int comida=0;  
+}; vector <homedeliv> Home;
 
 struct restaurantdeliv{
        /// Enums MainFood2;
@@ -36,12 +38,14 @@ struct restaurantdeliv{
     };vector <restaurantdeliv> Restaurant;
 
 
+
+
 //Prototipos de funciones
 void PrintMenu(),EmployeMenu(), CancelOrder();
 void HomeDelivery(), RestaurantDelivery();
 void HomeOrders(),RestaurantOrders();
 void ModifyHomeDeliveryOrders();
-
+void OutHomeOrders();
 //Funcion Principal solo contiene otra funcion para optimizacion del main
 int main(){
     PrintMenu();
@@ -73,7 +77,7 @@ void PrintMenu(){
         case 2: RestaurantDelivery();break;
         case 3: HomeOrders();break;
         case 4: //RestaurantOrders();break;
-        case 5: //Sales();break;
+        case 5: OutHomeOrders();break;
         case 6: //AdminMenu(); break;
         case 7: //AdminMenu(); break;
         case 8: //AdminMenu(); break;
@@ -93,6 +97,7 @@ void HomeDelivery(){
     bool keep = true;
     bool continuar=true;
     int opt=0,opt1,opt2=0,opt3=0;
+    char f;
 
     cin.ignore();
     srand(time(0));
@@ -115,29 +120,31 @@ void HomeDelivery(){
     cout<<"1)Ver Entradas.................."<<endl;
     cout<<"2)Ver Platos Fuertes............"<<endl;
     cout<<"3)Ver Bebidas..................."<<endl;
-    cout<<"4)Regresar Menu Principal......."<<endl;
+    cout<<"4)Regresar Menu Principal.......\n"<<endl;
     cin>>opt;
     switch (opt){
 
         case 1: 
                 cout<<"Entradas:                       "<<endl;
                 cout<<"Nombre                          Precio"<<endl;
-                cout<<"0)Orden de pan con ajo............$3.99 "<<endl;
-                cout<<"1)Orden de pizza rolls............$4.99 "<<endl;
-                cout<<"2)Orden de palitos de queso.......$3.75 "<<endl;
+                cout<<"a)Orden de pan con ajo............$3.99 "<<endl;
+                cout<<"b)Orden de pizza rolls............$4.99 "<<endl;
+                cout<<"c)Orden de palitos de queso.......$3.75 "<<endl;
                 cin>>opt1;
 
                 switch (opt1){
-                case 0: cout<<"Breadgarlic $3.50"<<endl;
-                        HomeDeliv.entry = BreadGarlic;  
-                        break;
+                case 1 : cout<<"Breadgarlic $3.50"<<endl;
+                         HomeDeliv.entry = BreadGarlic;  
+                            break;
                 case 1: cout<<"Pizzarrols $3.50"<<endl;
                         HomeDeliv.entry = Pizzarolls;  break;    
                 case 2: cout<<"Cheesesticks $3.50"<<endl;                
                         HomeDeliv.entry = Cheesesticks;  
                         break;       
                 }  
+                HomeDeliv.comida += HomeDeliv.entry; 
 
+            break;
         case 2: cout<<"Nombre               Precio"<<endl;
                 cout<<"0)Pizza................$13.99 "<<endl;
                 cout<<"1)Pasta................$5.55  "<<endl;
@@ -178,12 +185,11 @@ void HomeDelivery(){
         case 4: keep=false; break;
     }
         }while(keep);
-                cout<<"No. de orden:  "            <<endl;                        cout<<HomeDeliv.Var1<<endl;       
+                cout<<"No. de orden:  "            <<endl;      cout<<HomeDeliv.Var1<<endl;       
                 cout<<"su total a pagar es "       <<endl;
                 Home.insert(Home.end(), HomeDeliv);
                 cout <<"Pedido ingresado exitosamente!\n";
                 cin.ignore();
-
 }
 
 
@@ -226,13 +232,13 @@ void RestaurantDelivery(){
 void HomeOrders(){
 
     cout << "\nPedidos a domicilio: ";    
-    for (int i = 0; i < Home.size(); i++){
+    for (int i = 0; i <= Home.size(); i++){
         cout <<"Nombre del cliente : "<<Home[i].CustomeName             << "  "<<endl;
     //  cout <<"Numero de casa :     "<<Home[i].HomeAdd.HouseNumber     << "  "<<endl;
     //  cout <<"Colonia        :     "<<Home[i].HomeAdd.Suburb          << "  "<<endl;
     //  cout <<"Municipios     :     "<<Home[i].HomeAdd.Municipality    << "  "<<endl;
     //  cout <<"Departamento   :     "<<Home[i].HomeAdd.StateDepartament<< "  "<<endl;
-        cout <<"Entradas Ordenadas:  "<<Home[i].entry                   << "  "<<endl;
+        cout <<"Entradas Ordenadas:  "<<Home[i].comida                   << "  "<<endl;
     //cout <<"Pizzas Ordenadas:    "<<Home[i].LunchPlate               << "  "<<endl;
     //cout <<"Bebidas Ordenads:    "<<Home[i].Drinks                   << "  "<<endl;
         cout <<"No. de Orden    :    "<<Home[i].Var1                    << "  \n"<<endl;
@@ -252,6 +258,16 @@ void RestaurantOrders(){
     }*/   
 
 }
+
+void OutHomeOrders(){
+homedeliv outorder = Home.front();
+
+   for (int i=0; i <= Home.size(); i++){
+    cout << "Cliente:  " << Home[i].CustomeName<< " su pedido esta listo\n";
+
+}
+}
+
 
 void ModifyHomeDeliveryOrders(){
 /*    string CLientName;
