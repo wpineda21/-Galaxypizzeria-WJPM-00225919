@@ -2,195 +2,109 @@
 #include <string>
 using namespace std;
 
-struct Pedido{
-    string apellido;
-    int mesa;
-    int revueltas;
-    int queso;
-    int frijolqueso;
-    int tiempo;
+struct pedido{
+    string remitente, destinatario;
+    char tipo, modalidad;
+    int peso;    
 };
 
-// Tipo de dato que contendran los nodos de la Cola
-typedef Pedido T;
-const T noValido = {{" "},-1,-1,-1,-1,-1};
-
-// Registros: nodo y Cola
-struct Nodo{
-    T elemento;
-    struct Nodo* siguiente;
+struct cola{
+    pedido elemento;
+    cola* sig;
 };
 
-struct Cola{
-    Nodo* frente;
-    Nodo* final;
-};
+cola* queue(cola* c, pedido elemento);
+float calcularTotal(cola* lista);
 
-// Prototipos de funciones para Cola
-void initialize(Cola *q);
-bool empty(Cola *q);
-T front(Cola *q);
-T back(Cola *q);
-void enqueue(Cola *q, T x);
-T dequeue(Cola *q);
-int size(Cola *q);
+int main(void){
+    cola* pInicio = NULL;
+    pedido aux;
+    int opcion = 0;
 
-struct Pupuseria{
-    Cola colaPedidos;
-    int pupusasHechas;
-};
-Pupuseria laBendicion;
-
-void agregar();
-void consultar();
-void servir();
-void vertodos();
-
-int main(){
-    initialize(&laBendicion.colaPedidos);
-    laBendicion.pupusasHechas = 0;
-    
-    bool continuar = true;
     do{
-        int opcion = 0;
-        cout << "\n1) Agregar un pedido\n";
-        cout << "2) Consultar el estado actual\n";
-        cout << "3) Despachar un pedido\n";
-        cout << "4) Ver todos los pedidos\n";
-        cout << "5) Salir\n";
-        cout << "Opcion elegida: ";
-        cin >> opcion; cin.ignore();
-        
-        switch(opcion){
-            case 1: agregar(); break;
-            case 2: consultar(); break;
-            case 3: servir(); break;
-            case 4: vertodos(); break;
-            case 5: continuar = false; break;
-            default: cout << "Opcion invalida!\n"; break;
-        }
-    }while(continuar);
+        cout << "Remitente:\t"; getline(cin, aux.remitente);
+        cout << "Destinatario:\t"; getline(cin, aux.destinatario);
+        cout << "Tipo:\t"; cin >> aux.tipo; cin.ignore();
+        cout << "Modalidad:\t"; cin >> aux.modalidad; cin.ignore();
+        cout << "Peso:\t"; cin >> aux.peso; cin.ignore();
+
+        pInicio = queue(pInicio, aux);
+
+        cout << "Mas pedidos (1 - si, 0 - no)\t"; cin >> opcion; cin.ignore();
+
+    } while(opcion != 0);
+
+    cout << "Total por sus pedidos:\t" << calcularTotal(pInicio) << endl;
+    cout << "Muchas gracias por usas Correos de El Salvador!" << endl;
 
     return 0;
 }
 
-// Implementacion de funciones
-void initialize(Cola *q){
-    q->frente = NULL;
-    q->final = NULL;
-}
+cola* queue(cola* c, pedido elemento){
+    cola* nuevo = new cola;
+    nuevo->elemento = elemento;
+    nuevo->sig = NULL;
 
-bool empty(Cola *q){
-    return (q->frente==NULL) ? true : false;
-}
-
-T front(Cola *q){
-    if(empty(q)){
-        cout << "Underflow!" << endl;
-        return noValido;
+    if(!c)
+        c = nuevo;
+    else{
+        cola* aux = c;
+        while(aux->sig)
+            aux = aux->sig;
+        aux->sig = nuevo;
     }
-    return (q->frente)->elemento;
+    return c;
 }
 
-T back(Cola *q){
-    if(empty(q)){
-        cout << "Underflow!" << endl;
-        return noValido;
-    }
-    return (q->final)->elemento;
-}
-
-void enqueue(Cola *q, T x){
-    Nodo *unNodo = new Nodo;
-    unNodo->elemento = x;
-    unNodo->siguiente = NULL;
-    
-    if(q->final==NULL)
-        q->frente = unNodo;
-    else
-        (q->final)->siguiente = unNodo;
-        
-    q->final = unNodo;
-}
-
-T dequeue(Cola *q){
-    if(empty(q)){
-        cout << "Underflow!" << endl;
-        return noValido;
-    }
-    Nodo *unNodo = q->frente;
-    T x = unNodo->elemento;
-    q->frente = unNodo->siguiente;
-    if(q->frente==NULL)
-        q->final = NULL;
-    delete(unNodo);
-    return x;
-}
-
-int size(Cola *q){
-    Cola colaTemporal;
-    initialize(&colaTemporal);
-    
-    int contador = 0;
-    // Transfiriendo desde q hasta colaTemporal
-    while(!empty(q)){
-        T elemento = dequeue(q);
-        enqueue(&colaTemporal, elemento);
-        contador++;
-    }
-    // Transfiriendo desde colaTemporal hasta q
-    while(!empty(&colaTemporal)){
-        T elemento = dequeue(&colaTemporal);
-        enqueue(q, elemento);
-    }
-    return contador;
-}
-
-// Funciones ---------------------------------------
-void agregar(){
-    // Solicitar datos del pedido
-    Pedido unPedido;
-    cout << "Digite su apellido: "; getline(cin, unPedido.apellido);
-    cout << "Numero de la mesa: "; cin >> unPedido.mesa; cin.ignore();
-    cout << "Cantidad de revueltas: "; cin >> unPedido.revueltas; cin.ignore();
-    cout << "Cantidad de queso: "; cin >> unPedido.queso; cin.ignore();
-    cout << "Cantidad de FQ: "; cin >> unPedido.frijolqueso; cin.ignore();
-    unPedido.tiempo = (unPedido.revueltas+unPedido.queso+unPedido.frijolqueso) * 90;
-    
-    // Agregar a la cola
-    enqueue(&laBendicion.colaPedidos, unPedido);
-    // Modificar contadores
-    laBendicion.pupusasHechas += (unPedido.revueltas+unPedido.queso+unPedido.frijolqueso);
-}
-
-void consultar(){
-    cout << "Pedidos en espera: " << size(&laBendicion.colaPedidos) << endl;
-    cout << "Total pupusas hechas: " << laBendicion.pupusasHechas << endl;
-}
-
-void servir(){
-    Pedido pedidoDespachado = dequeue(&laBendicion.colaPedidos);
-    cout << "Familia " << pedidoDespachado.apellido << " su pedido esta listo\n";
-    cout << "Se encuentran en la mesa " << pedidoDespachado.mesa << endl;
-}
-
-void vertodos(){
-    Cola colaTemporal;
-    initialize(&colaTemporal);
-    
-    // Transfiriendo desde laBendicion.colaPedidos hasta colaTemporal
-    while(!empty(&laBendicion.colaPedidos)){
-        Pedido unPedido = dequeue(&laBendicion.colaPedidos);
-        enqueue(&colaTemporal, unPedido);
-        
-        cout << "Info del pedido: " << unPedido.apellido << ", ";
-        cout << "R: " << unPedido.revueltas << ", ";
-        cout << "Q: " << unPedido.queso << ", ";
-        cout << "FQ: " << unPedido.frijolqueso << "\n\n";
-    }
-    // Transfiriendo desde colaTemporal hasta laBendicion.colaPedidos
-    while(!empty(&colaTemporal)){
-        T elemento = dequeue(&colaTemporal);
-        enqueue(&laBendicion.colaPedidos, elemento);
+float calcularTotal(cola* lista){
+    if(!lista)
+        return 0;
+    else{
+        float sub = 0;
+        switch (lista->elemento.tipo) {
+        case 'c':
+        case 'C':
+            switch(lista->elemento.modalidad){
+                case 'u':
+                case 'U':
+                    sub = 3;
+                break;
+                case 'n':
+                case 'N':
+                    sub = 1;
+                break;
+                case 'i':
+                case 'I':
+                    sub = 2;
+                break;
+            }
+        break;
+        case 'p':
+        case 'P':
+            switch(lista->elemento.modalidad){
+                case 'u':
+                case 'U':
+                    if(lista->elemento.peso <= 500)
+                        sub = 10;
+                    else
+                        sub = 15;
+                break;
+                case 'n':
+                case 'N':
+                    sub = 5;
+                break;
+                case 'i':
+                case 'I':
+                    if(lista->elemento.peso < 100)
+                        sub = 5;
+                    else
+                        sub = 10;
+                break;
+            }
+        break;
+        default:
+            break;
+        }
+        return sub + calcularTotal(lista->sig);
     }
 }
