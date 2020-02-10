@@ -7,7 +7,7 @@
 using namespace std;
 
 
-//Declaracion de Enums
+//Declaracion de Enumeraciones
  enum Entry  {trash1,BreadGarlic,Pizzarolls,Cheesesticks};
  enum Food   {trash2,Pizza,Paste,Lasagna};
  enum drinks {trash3,Beer,Soda,Icetea};
@@ -39,6 +39,7 @@ struct RestaurantRegister{
  
 };typedef RestaurantRegister Restaurant;
 
+
 //inicializando Las listas enlazadas
 vector <Home> list;
 vector <Restaurant> list2;
@@ -47,14 +48,10 @@ vector <Restaurant> list2;
 float fe=0,Norden=0,Norden1=0;
 float b1=0,c1=0,d1=0,g1=0,h1=0,h2=0;
 
-
 //Prototipos de funciones
 void PrintMenu(),EmployeMenu(), CancelOrderWorker(),CancelOrderAdmin();
-void auxery(), RestaurantDelivery(),MenuAdmin();
-void HomeOrders(),RestaurantOrders();
-void auxeryOrders();
-void AgregarHome();
-void OutHomeOrders();
+void auxery(), RestaurantDelivery(),MenuAdmin(),HomeOrders(),RestaurantOrders();
+void auxeryOrders(),AgregarHome(),OutHomeOrders(),OutRestaurantOrders();
 bool comprobar(char r);
 float TimeOrders(float a,float b, float c,int V2);
 float TimeOrders(float a,float b,float c);
@@ -95,9 +92,9 @@ void PrintMenu(){
         case 3: HomeOrders();break;
         case 4: cin.ignore();RestaurantOrders();break;
         case 5: OutHomeOrders();break;
-        case 6: //AdminMenu(); break;
-        case 7: TotalyTimeOrders1(HomeData.tiempo2); break;
-        case 8: TotalyTimeOrders2(restaurant.Tiempo2R); break;
+        case 6: OutRestaurantOrders(); break;
+        case 7: TotalyTimeOrders1(HomeData.tiempo); break;
+        case 8: TotalyTimeOrders2(restaurant.tiempo1R); break;
         case 9: CancelOrderWorker(); break;
         case 10: break;
         case 11: MenuAdmin(); break;
@@ -352,7 +349,7 @@ void HomeOrders(){
     }  
 }
 
-
+//mostrando ordenes de restaurante
 void RestaurantOrders(){    
  Restaurant Elment1;
         cout << "\nPedidos actuales en Restaurante: "<<Norden1<<"\n";    
@@ -372,9 +369,22 @@ void OutHomeOrders(){
     Home OutHome = list.front();
     for (int i=0; i <=list.size(); i++){
     cout << "Cliente:  " <<OutHome.CustomeName<< " su pedido esta listo\n";
+    
 }
 }
 
+void OutRestaurantOrders(){      
+
+    Restaurant OutRestauran = list2.front();
+    for (int i=0; i <=list2.size(); i++){
+    cout << "Cliente:  " <<OutRestauran.PeopleName<< "  su pedido esta listo\n";
+}
+}
+
+
+
+
+//Sobrecarga de funcion y procedimiento de calculo de espera de una orden a domicilio
 float TimeOrders(float a,float b,float c,int V2){
     float x=0,y=0,z=0,suma=0,suma1=0,suma2=0;
     x=a*1.10;
@@ -385,6 +395,7 @@ float TimeOrders(float a,float b,float c,int V2){
 return suma1;
 }
 
+//Sobrecarga de funcion y procedimiento de calculo de esperade una orden en restaurante
 float TimeOrders(float a,float b,float c){
     float x=0,y=0,z=0,suma=0,suma1=0,suma2=0;
     x=a*1.10;
@@ -396,6 +407,7 @@ float TimeOrders(float a,float b,float c){
 return suma1;
 }
 
+//calculo de la suma de los tiempos de espera a domicilio
 float TotalyTimeOrders1(float  x){
     cout<<"Tiempo de espera promedio a domicilio pizzeria "<<endl;
     cout<<"No. de ordenes:   "<<Norden<<endl;
@@ -405,6 +417,7 @@ float TotalyTimeOrders1(float  x){
     return c1;
 }
 
+//calculo de la suma de los tiempos de espera en restaurante
 float TotalyTimeOrders2(float x){
     cout<<"Tiempo de espera promedio en Restaurante pizzeria "<<endl;
     cout<<"No. de ordenes:   "<<Norden1<<endl;
@@ -418,7 +431,7 @@ void auxeryOrders(){
 
 }
 
-
+//Cancelacion de orden desde el menu normal o de empleado
 void CancelOrderWorker(){
 int opt3;
 bool OUT = true;
@@ -444,7 +457,7 @@ bool OUT = true;
     }
 }
 
-
+//menu especial para cuando se entre en forma de administrador
 void MenuAdmin(){
     Home HomeData;
     Restaurant restaurant;
@@ -495,6 +508,7 @@ void MenuAdmin(){
 }
 }
 
+//funcion de para eliminar una orden
 void CancelOrderAdmin(){
 int opt3;
 char s;
@@ -521,6 +535,8 @@ bool OUT = true;
 }
 }
 
+
+//funcion recursiva  que emula un tipo de bandera
 bool comprobar(char r){
      int n=int(r);
      if (n>=48 and n<=57) {
